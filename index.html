@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Followers Master - New Order</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Arial, sans-serif;
+}
+
+body{
+  background:#f4f6fb;
+  color:#222;
+}
+
+/* Sidebar */
+.sidebar{
+  position:fixed;
+  left:0;
+  top:0;
+  width:240px;
+  height:100vh;
+  background:#111827;
+  color:white;
+  padding:20px 15px;
+  z-index:10;
+}
+
+.logo{
+  font-size:23px;
+  font-weight:bold;
+  text-align:center;
+  padding:12px 0 28px;
+}
+
+.logo span{
+  color:#6d5dfc;
+}
+
+.menu a{
+  display:block;
+  color:#cbd5e1;
+  text-decoration:none;
+  padding:13px 15px;
+  margin:5px 0;
+  border-radius:8px;
+  transition:.2s;
+}
+
+.menu a:hover,
+.menu a.active{
+  background:#6d5dfc;
+  color:#fff;
+}
+
+/* Main */
+.main{
+  margin-left:240px;
+  padding:25px;
+}
+
+.topbar{
+  background:white;
+  border-radius:12px;
+  padding:18px 22px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  box-shadow:0 2px 12px rgba(0,0,0,.05);
+  margin-bottom:25px;
+}
+
+.topbar h2{
+  font-size:21px;
+}
+
+.balance{
+  background:#eeeafd;
+  color:#5545d8;
+  padding:10px 15px;
+  border-radius:8px;
+  font-weight:bold;
+}
+
+/* Cards */
+.cards{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
+  margin-bottom:25px;
+}
+
+.card{
+  background:white;
+  padding:20px;
+  border-radius:12px;
+  box-shadow:0 2px 12px rgba(0,0,0,.05);
+}
+
+.card small{
+  color:#777;
+}
+
+.card h3{
+  margin-top:8px;
+  font-size:25px;
+}
+
+/* Order */
+.order-box{
+  background:white;
+  border-radius:12px;
+  padding:25px;
+  box-shadow:0 2px 12px rgba(0,0,0,.05);
+  max-width:850px;
+}
+
+.order-box h2{
+  margin-bottom:20px;
+}
+
+label{
+  display:block;
+  margin:15px 0 7px;
+  font-weight:bold;
+  font-size:14px;
+}
+
+input,
+select{
+  width:100%;
+  padding:13px;
+  border:1px solid #ddd;
+  border-radius:7px;
+  outline:none;
+  background:#fff;
+}
+
+input:focus,
+select:focus{
+  border-color:#6d5dfc;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:15px;
+}
+
+.info{
+  background:#f5f3ff;
+  padding:13px;
+  margin-top:18px;
+  border-radius:7px;
+  color:#5144c8;
+}
+
+button{
+  width:100%;
+  border:none;
+  padding:14px;
+  margin-top:20px;
+  border-radius:8px;
+  background:#6d5dfc;
+  color:white;
+  font-size:16px;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+button:hover{
+  background:#5849e8;
+}
+
+.notice{
+  margin-top:15px;
+  padding:12px;
+  background:#fff7e6;
+  color:#996600;
+  border-radius:7px;
+  font-size:13px;
+}
+
+/* Mobile */
+.mobile-menu{
+  display:none;
+}
+
+@media(max-width:800px){
+
+  .sidebar{
+    left:-250px;
+    transition:.3s;
+  }
+
+  .sidebar.show{
+    left:0;
+  }
+
+  .main{
+    margin-left:0;
+    padding:15px;
+  }
+
+  .mobile-menu{
+    display:block;
+    background:#6d5dfc;
+    color:white;
+    border:none;
+    width:auto;
+    padding:9px 13px;
+    margin:0;
+    border-radius:7px;
+  }
+
+  .topbar{
+    padding:14px;
+  }
+
+  .topbar h2{
+    font-size:17px;
+  }
+
+  .balance{
+    font-size:12px;
+    padding:8px;
+  }
+
+  .cards{
+    grid-template-columns:1fr;
+  }
+
+  .grid{
+    grid-template-columns:1fr;
+    gap:0;
+  }
+
+  .order-box{
+    padding:18px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- Sidebar -->
+<div class="sidebar" id="sidebar">
+
+  <div class="logo">
+    Followers <span>Master</span>
+  </div>
+
+  <div class="menu">
+    <a href="#" onclick="showPage('dashboard')">🏠 Dashboard</a>
+    <a href="#" class="active" onclick="showPage('order')">🛒 New Order</a>
+    <a href="#" onclick="showPage('orders')">📦 My Orders</a>
+    <a href="#" onclick="showPage('services')">📋 Services</a>
+    <a href="#" onclick="showPage('addfunds')">💳 Add Funds</a>
+    <a href="#" onclick="showPage('support')">💬 Support</a>
+  </div>
+
+</div>
+
+<!-- Main -->
+<div class="main">
+
+  <div class="topbar">
+    <div style="display:flex;align-items:center;gap:12px;">
+      <button class="mobile-menu" onclick="toggleMenu()">☰</button>
+      <h2>New Order</h2>
+    </div>
+
+    <div class="balance">
+      Balance: ₹0.00
+    </div>
+  </div>
+
+  <!-- Statistics -->
+  <div class="cards">
+
+    <div class="card">
+      <small>Total Orders</small>
+      <h3>0</h3>
+    </div>
+
+    <div class="card">
+      <small>Completed Orders</small>
+      <h3>0</h3>
+    </div>
+
+    <div class="card">
+      <small>Account Balance</small>
+      <h3>₹0.00</h3>
+    </div>
+
+  </div>
+
+  <!-- Order Form -->
+  <div class="order-box">
+
+    <h2>🛒 Place New Order</h2>
+
+    <label>Category</label>
+
+    <select id="category" onchange="changeServices()">
+      <option value="">Select Category</option>
+      <option value="instagram">Instagram</option>
+      <option value="youtube">YouTube</option>
+      <option value="facebook">Facebook</option>
+      <option value="telegram">Telegram</option>
+    </select>
+
+
+    <label>Service</label>
+
+    <select id="service" onchange="updateRate()">
+      <option value="">Select Service</option>
+    </select>
+
+
+    <label>Link</label>
+
+    <input
+      type="url"
+      id="link"
+      placeholder="https://instagram.com/username"
+    >
+
+
+    <div class="grid">
+
+      <div>
+        <label>Quantity</label>
+
+        <input
+          type="number"
+          id="quantity"
+          placeholder="Enter quantity"
+          oninput="calculatePrice()"
+        >
+      </div>
+
+      <div>
+        <label>Rate per 1000</label>
+
+        <input
+          type="text"
+          id="rate"
+          value="₹0.00"
+          readonly
+        >
+      </div>
+
+    </div>
+
+
+    <div class="info">
+      Estimated Charge:
+      <strong id="charge">₹0.00</strong>
+    </div>
+
+
+    <button onclick="placeOrder()">
+      Place Order
+    </button>
+
+
+    <div class="notice">
+      Demo panel: এই version-এ কোনো real payment বা real social-media order submit হবে না।
+    </div>
+
+  </div>
+
+</div>
+
+
+<script>
+
+const services = {
+
+  instagram: [
+    {
+      name:"Instagram Followers - Demo",
+      rate:49
+    },
+    {
+      name:"Instagram Likes - Demo",
+      rate:29
+    },
+    {
+      name:"Instagram Views - Demo",
+      rate:19
+    }
+  ],
+
+  youtube: [
+    {
+      name:"YouTube Subscribers - Demo",
+      rate:99
+    },
+    {
+      name:"YouTube Views - Demo",
+      rate:39
+    },
+    {
+      name:"YouTube Likes - Demo",
+      rate:29
+    }
+  ],
+
+  facebook: [
+    {
+      name:"Facebook Page Followers - Demo",
+      rate:59
+    },
+    {
+      name:"Facebook Likes - Demo",
+      rate:39
+    }
+  ],
+
+  telegram: [
+    {
+      name:"Telegram Members - Demo",
+      rate:79
+    },
+    {
+      name:"Telegram Views - Demo",
+      rate:25
+    }
+  ]
+
+};
+
+
+function toggleMenu(){
+
+  document
+  .getElementById("sidebar")
+  .classList.toggle("show");
+
+}
+
+
+function changeServices(){
+
+  const category =
+    document.getElementById("category").value;
+
+  const service =
+    document.getElementById("service");
+
+  service.innerHTML =
+    '<option value="">Select Service</option>';
+
+  if(!services[category]) return;
+
+  services[category].forEach((item,index)=>{
+
+    const option =
+      document.createElement("option");
+
+    option.value = index;
+    option.textContent = item.name;
+
+    service.appendChild(option);
+
+  });
+
+  document.getElementById("rate").value="₹0.00";
+  document.getElementById("charge").textContent="₹0.00";
+
+}
+
+
+function updateRate(){
+
+  const category =
+    document.getElementById("category").value;
+
+  const index =
+    document.getElementById("service").value;
+
+  if(
+    !services[category] ||
+    index === ""
+  ) return;
+
+  const rate =
+    services[category][index].rate;
+
+  document.getElementById("rate").value =
+    "₹" + rate.toFixed(2);
+
+  calculatePrice();
+
+}
+
+
+function calculatePrice(){
+
+  const category =
+    document.getElementById("category").value;
+
+  const index =
+    document.getElementById("service").value;
+
+  const quantity =
+    Number(document.getElementById("quantity").value);
+
+  if(
+    !services[category] ||
+    index === "" ||
+    !quantity
+  ){
+
+    document.getElementById("charge")
+    .textContent="₹0.00";
+
+    return;
+  }
+
+  const rate =
+    services[category][index].rate;
+
+  const price =
+    (quantity / 1000) * rate;
+
+  document.getElementById("charge")
+    .textContent =
+    "₹" + price.toFixed(2);
+
+}
+
+
+function placeOrder(){
+
+  const category =
+    document.getElementById("category").value;
+
+  const service =
+    document.getElementById("service").value;
+
+  const link =
+    document.getElementById("link").value;
+
+  const quantity =
+    document.getElementById("quantity").value;
+
+
+  if(
+    !category ||
+    service === "" ||
+    !link ||
+    !quantity
+  ){
+
+    alert("Please fill all fields.");
+
+    return;
+  }
+
+
+  alert(
+    "Demo Order Created!\\n\\n" +
+    "Your order was not actually submitted."
+  );
+
+}
+
+
+function showPage(page){
+
+  if(page !== "order"){
+
+    alert(
+      page.charAt(0).toUpperCase() +
+      page.slice(1) +
+      " page is coming soon."
+    );
+
+  }
+
+}
+
+</script>
+
+</body>
+</html>
